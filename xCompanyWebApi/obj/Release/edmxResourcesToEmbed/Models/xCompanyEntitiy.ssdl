@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="xcompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="employees">
+    <Key>
+      <PropertyRef Name="empId" />
+    </Key>
+    <Property Name="empId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="firstName" Type="varchar" MaxLength="50" />
+    <Property Name="lastName" Type="varchar" MaxLength="50" />
+    <Property Name="age" Type="int" />
+    <Property Name="posId" Type="uniqueidentifier" />
+    <Property Name="address" Type="varchar" MaxLength="200" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="positions">
+    <Key>
+      <PropertyRef Name="posId" />
+    </Key>
+    <Property Name="posId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="posName" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <Association Name="FK_employees_positions">
+    <End Role="positions" Type="Self.positions" Multiplicity="0..1" />
+    <End Role="employees" Type="Self.employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="positions">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="employees">
+        <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="xcompanyModelStoreContainer">
+    <EntitySet Name="employees" EntityType="Self.employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="positions" EntityType="Self.positions" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_employees_positions" Association="Self.FK_employees_positions">
+      <End Role="positions" EntitySet="positions" />
+      <End Role="employees" EntitySet="employees" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
